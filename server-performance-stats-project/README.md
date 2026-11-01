@@ -10,6 +10,7 @@ First Project - Creating a Linux Bash script that can analyze and showcase Serve
 
 ## Second Step
 2. **Make script into an executable**
+
 In order to run the server-stats.sh script, it needs to be granted permission to be executable as shown:
   ```
    chmod +x server.stats.sh
@@ -17,6 +18,7 @@ In order to run the server-stats.sh script, it needs to be granted permission to
 
 ## Third and Final Step
 3. **Execute the script and verify**
+
 After the script has been granted execution permission, simply run it using the below command:
    ```
    ./server-stats.sh
