@@ -1,42 +1,64 @@
-echo "######################"
-echo "# System Uptime Info #"
-echo "######################"
+#!/bin/bash
 
-uptime
+# get total CPU usage
+get_cpu_usage() {
+    echo "CPU Usage:"
+    top -bn1 | grep "Cpu(s)" | \
+    sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | \
+    awk '{print "CPU Load: " 100 - $1"%"}'
+}
 
-echo
+# get total memory usage
+get_memory_usage() {
+    echo "Memory Usage:"
+    free -h | awk '/Mem:/ {printf "Used: %s / Total: %s (%.2f%%)\n", $3, $2, $3/$2 * 100.0}'
+}
 
-echo "###################"
-echo "# Total CPU Usage #"
-echo "###################"
+# get total disk usage
+get_disk_usage() {
+    echo "Disk Usage:"
+    df -h --total | awk '/total/ {printf "Used: %s / Total: %s (%.2f%%)\n", $3, $2, $5}'
+}
 
-top -bn1 | grep "%Cpu(s):" | cut -d ',' -f 4 | awk '{print "Usage: " 100-$1 "%"}'
+# get top 5 processes by CPU usage
+get_top_cpu_processes() {
+    echo "Top 5 Processes by CPU Usage:"
+    ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -6
+}
 
-echo
+# get top 5 processes by memory usage
+get_top_memory_processes() {
+    echo "Top 5 Processes by Memory Usage:"
+    ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -6
+}
 
-echo "######################"
-echo "# Total Memory Usage #"
-echo "######################"
-free | grep "Mem:" -w | awk '{printf "Total: %.1fGi\nUsed: %.1fGi (%.2f%%)\nFree: %.1fGi (%.2f%%)\n",$2/1024^2, $3/1024^2, $3/$2 * 100, $4/1024^2, $4/$2 * 100}'
+# Additional stats
+get_additional_stats() {
+    echo "OS Version: $(uname -a)"
+    echo "Uptime: $(uptime -p)"
+    echo "Logged in Users: $(who | wc -l)"
+}
 
-echo
+main() {
+    echo "Server Performance Stats"
+    echo "========================"
+    
+    get_cpu_usage
+    echo ""
+    
+    get_memory_usage
+    echo ""
+    
+    get_disk_usage
+    echo ""
+    
+    get_top_cpu_processes
+    echo ""
+    
+    get_top_memory_processes
+    echo ""
+    
+    get_additional_stats
+}
 
-echo "####################"
-echo "# Total Disk Usage #"
-echo "####################"
-# Accounting for reserved space.
-df -h | grep "/" -w | awk '{printf "Total: %sG\nUsed: %s (%.2f%%)\nFree: %s (%.2f%%)\n",$3 + $4, $3, $3/($3+$4) * 100, $4, $4/($3+$4) * 100}'
-
-echo
-
-echo "###################################"
-echo "# Top 5 Processes by Memory Usage #"
-echo "###################################"
-ps aux --sort -%mem | head -n 6 | awk '{print $1 "\t" $2 "\t" $4 "\t" $11}'
-
-echo
-
-echo "################################"
-echo "# Top 5 Processes by CPU Usage #"
-echo "################################"
-ps aux --sort -%cpu | head -n 6 | awk '{print $1 "\t" $2 "\t" $3 "\t" $11}'
+main
