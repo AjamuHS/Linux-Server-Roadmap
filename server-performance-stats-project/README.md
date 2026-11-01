@@ -25,7 +25,8 @@ After the script has been granted execution permission, simply run it using the 
    ./server-stats.sh
    ```
 Please see the output below for verification:
-![image]
+<img width="916" height="503" alt="image" src="https://github.com/user-attachments/assets/6289a13b-056e-469b-beb4-100fbb0355a4" />
+
 
 This project is from https://roadmap.sh/projects/server-stats
 Many thanks!
