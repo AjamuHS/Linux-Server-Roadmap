@@ -1,4 +1,4 @@
-# linux-server-roadmap
+# Server Performance Statistics
 First Project - Creating a Linux Bash script that can analyze and showcase Server Performance stats.
 
 ## First Step
