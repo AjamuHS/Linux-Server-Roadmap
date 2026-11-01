@@ -3,6 +3,7 @@ First Project - Creating a Linux Bash script that can analyze and showcase Serve
 
 ## First Step
 1. **Clone the repository as shown below**
+
    ```  
    git clone https://github.com/AjamuHS/linux-server-roadmap.git
    cd server-performance-stats-project
